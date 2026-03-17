@@ -1,1 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      sans-serif;
+    background-color: #0b0f12;
+    color: #e2e8f0;
+  }
+}

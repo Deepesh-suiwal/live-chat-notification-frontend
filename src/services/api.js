@@ -1,4 +1,5 @@
 import axios from "axios";
+import { disconnectSocket } from "../socket/socket";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -41,6 +42,11 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // 🔕 Don't refresh for check-token endpoint
+    if (originalRequest.url?.includes("/api/users/auth/check-token")) {
+      return Promise.reject(error);
+    }
+
     // 🔁 Infinite loop guard
     if (originalRequest._retry) {
       return Promise.reject(error);
@@ -75,6 +81,12 @@ api.interceptors.response.use(
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
+
+      // 🔥 FORCE LOGOUT FALLBACK
+      disconnectSocket();
+      localStorage.setItem("logout", Date.now());
+
+      window.location.href = "/login";
 
       return Promise.reject(refreshError);
     } finally {

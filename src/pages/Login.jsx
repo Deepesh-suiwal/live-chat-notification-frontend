@@ -36,8 +36,11 @@ const Login = () => {
       setAuth(true);
 
       connectSocket();
+            // 🔥 LOGIN SYNC (IMPORTANT)
+      localStorage.setItem("login", Date.now());
 
       navigate("/dashboard");
+      
     } catch (error) {
       setErr(error?.response?.data?.message || "Login failed");
     } finally {

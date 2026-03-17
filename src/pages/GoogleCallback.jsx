@@ -4,7 +4,6 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { connectSocket } from "../socket/socket";
 
-
 const GoogleCallback = () => {
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -33,10 +32,13 @@ const GoogleCallback = () => {
         setAuth(true);
 
         connectSocket();
+        // 🔥 LOGIN SYNC (IMPORTANT)
+        localStorage.setItem("login", Date.now());
 
         navigate("/dashboard");
       } catch (err) {
         console.error("Google login failed", err);
+        navigate("/login");
       }
     };
 
